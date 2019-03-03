@@ -4,18 +4,19 @@ from setuptools import setup, find_packages
 
 __ROOT = pathlib.Path(__file__).parent
 
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 __author__ = 'Stanislav Kiryukhin'
 __license__ = "MIT"
 
-with open(str(__ROOT / 'README.md')) as f:
-    __description_long__ = f.read()
+with open(str(__ROOT / 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='newrelic-asyncpg',
     version=__version__,
-    description='Unofficial asyncpg extensions for the NewRelic Python Agent',
-    long_description=__description_long__,
+    description='Unofficial extension for the NewRelic Python Agent for support asyncpg database adapter',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/KorsaR-ZN/python-newrelic-asyncpg',
     author=__author__,
     author_email='korsar.zn@gmail.com',

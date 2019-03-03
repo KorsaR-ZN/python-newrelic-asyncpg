@@ -15,8 +15,8 @@ class ConnectionFactory(DBAPI2ConnectionFactory):
         agent.wrap_function_wrapper(kwargs['connection_class'], '_execute', self._execute_wrapper)
         return super(ConnectionFactory, self).__call__(*args, **kwargs)
 
-
     async def _execute_wrapper(self, wrapped, instance, args, kwargs):
+        """"""
 
         db_host, db_port = instance._addr
         db_name = instance._params.database
@@ -24,7 +24,9 @@ class ConnectionFactory(DBAPI2ConnectionFactory):
         trace_kwargs = {
             "transaction": agent.current_transaction(),
             "dbapi2_module": self._nr_dbapi2_module,
-            "connect_params": ((db_host, db_port, db_name), {}),
+            "host": db_host,
+            "port_path_or_id": db_port,
+            "database_name": db_name,
             "sql": args[0],
             "sql_parameters": args[1:]
         }
@@ -34,13 +36,14 @@ class ConnectionFactory(DBAPI2ConnectionFactory):
 
 
 def instrument(module):
+    """"""
 
     agent.register_database_client(
         module,
         database_product='Postgres',
         quoting_style='single+dollar',
-        explain_query='explain',
-        explain_stmts=('select', 'insert', 'update', 'delete'),
+        # explain_query='explain',
+        # explain_stmts=('select', 'insert', 'update', 'delete'),
     )
 
     agent.wrap_object(module, 'connection.connect', ConnectionFactory, (module,))
